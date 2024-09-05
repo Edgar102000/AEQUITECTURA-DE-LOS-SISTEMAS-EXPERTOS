@@ -1,0 +1,116 @@
+# Módulo de adquisición de conocimiento
+
+class Expert:
+    def __init__(self, name):
+        self.name = name
+    
+    def provide_knowledge(self):
+        # El experto provee el conocimiento en forma de reglas
+        return {
+            'dolor de cabeza': 'toma un analgésico',
+            'fiebre': 'toma paracetamol',
+            'tos': 'toma un jarabe para la tos'
+        }
+
+class Sensor:
+    def get_data(self):
+        # Los sensores pueden proporcionar información. Ejemplo básico:
+        return {
+            'temperatura': 37.5,
+            'frecuencia cardíaca': 85
+        }
+
+class Database:
+    def get_medical_data(self):
+        # Simulando acceso a una base de datos
+        return {
+            'paracetamol': 'Reduce la fiebre',
+            'analgésico': 'Alivia el dolor de cabeza'
+        }
+
+# Uso de los módulos de adquisición de conocimiento
+expert = Expert("Doctor Perez")
+sensor = Sensor()
+database = Database()
+
+expert_knowledge = expert.provide_knowledge()
+sensor_data = sensor.get_data()
+database_info = database.get_medical_data()
+
+print("Conocimiento del experto:", expert_knowledge)
+print("Datos de sensores:", sensor_data)
+print("Datos de base de datos:", database_info)
+# Base de conocimientos (reglas y hechos)
+class KnowledgeBase:
+    def __init__(self):
+        self.rules = []
+        self.facts = []
+    
+    def add_rule(self, rule):
+        self.rules.append(rule)
+    
+    def add_fact(self, fact):
+        self.facts.append(fact)
+
+    def get_rules(self):
+        return self.rules
+
+    def get_facts(self):
+        return self.facts
+
+# Módulo de adquisición de conocimiento alimentando la base de conocimientos
+knowledge_base = KnowledgeBase()
+
+# Agregamos hechos y reglas del conocimiento
+for symptom, treatment in expert_knowledge.items():
+    knowledge_base.add_rule(f"Si el paciente tiene {symptom}, {treatment}")
+    
+for sensor, value in sensor_data.items():
+    knowledge_base.add_fact(f"El sensor detecta {sensor} con valor {value}")
+
+print("\nBase de Conocimientos - Reglas:")
+for rule in knowledge_base.get_rules():
+    print(rule)
+
+print("\nBase de Hechos:")
+for fact in knowledge_base.get_facts():
+    print(fact)
+
+# Motor de inferencia y explicación
+class InferenceEngine:
+    def __init__(self, knowledge_base):
+        self.knowledge_base = knowledge_base
+
+    def infer(self, symptom):
+        for rule in self.knowledge_base.get_rules():
+            if symptom in rule:
+                return rule
+        return "No se encontró ninguna regla para este síntoma."
+
+# Módulo de explicaciones
+class ExplanationModule:
+    def explain(self, rule):
+        return f"Aplicamos esta regla: {rule}"
+
+# Interfaz con el usuario
+def interface():
+    print("\nBienvenido al sistema experto.")
+    symptom = input("Por favor ingrese su síntoma: ")
+    
+    # Tratamiento del conocimiento
+    inference_engine = InferenceEngine(knowledge_base)
+    explanation_module = ExplanationModule()
+    
+    result = inference_engine.infer(symptom)
+    explanation = explanation_module.explain(result)
+    
+    print(explanation)
+
+# Simulación de interacción con el usuario
+interface()
+
+# Utilización del conocimiento por parte del usuario
+# El usuario interactúa directamente con el sistema a través de la interfaz de usuario
+
+# La función `interface()` simula esa interacción y muestra el proceso completo
+interface()
